@@ -6,7 +6,7 @@ import 'package:project2_gsg/pages/Home/medicineslist.dart';
 import 'package:project2_gsg/pages/add/add_new.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-
+//Done
 class home_page extends StatefulWidget {
 
 
@@ -115,19 +115,19 @@ class _home_pageState extends State<home_page> {
         },
         items: [
           BottomNavigationBarItem(
-            title: Text('Home'),
+            title: Text(''),
             icon: Icon(Icons.home),
           ),
           BottomNavigationBarItem(
-            title: Text('Calendar'),
+            title: Text(''),
             icon: Icon(Icons.calendar_today_outlined),
           ),
           BottomNavigationBarItem(
-            title: Text('Add'),
+            title: Text(''),
             icon: Icon(Icons.add),
           ),
           BottomNavigationBarItem(
-            title: Text('Profile'),
+            title: Text(''),
             icon: Icon(Icons.perm_identity),
           ),
         ],
