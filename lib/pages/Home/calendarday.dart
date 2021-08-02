@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../day.dart';
+import '../../models/day.dart';
 
 class CalendarDay extends StatefulWidget {
   final Day day;

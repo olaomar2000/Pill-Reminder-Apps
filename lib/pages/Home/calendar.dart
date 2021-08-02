@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project2_gsg/pages/Home/calendarday.dart';
 
-import '../../day.dart';
+import '../../models/day.dart';
 
 class Calendar extends StatefulWidget {
   @override
