@@ -41,7 +41,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       height: 8.0,
       width: isActive ? 24.0 : 16.0,
       decoration: BoxDecoration(
-        color: isActive ? Colors.pinkAccent : Color(0xFF7B51D3),
+        color: isActive ? Color(0xffFA8CA5) : Color(0xFF7B51D3),
         borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
     );
@@ -256,25 +256,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ? Container(
 
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  ElevatedButton(
-                    style: ButtonStyle(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ))),
-                    child: Text('Sign up'),
-                    onPressed: () {},
-                  ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ))),
-                    child: Text('Log in'),
-                    onPressed: () {},
+
+                  Padding(
+                    padding:  EdgeInsets.only(right: 20,bottom: 10),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ))),
+                      child: Text('Start'),
+                      onPressed: () {},
+                    ),
                   ),
                 ],
               ),

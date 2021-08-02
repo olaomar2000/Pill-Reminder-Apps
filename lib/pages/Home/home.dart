@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:project2_gsg/database/repository.dart';
+import 'package:project2_gsg/models/calendar_day_model.dart';
+import 'package:project2_gsg/models/pill.dart';
 import 'package:project2_gsg/pages/Home/calendar.dart';
 import 'package:project2_gsg/pages/Home/medicineslist.dart';
 import 'package:project2_gsg/pages/add/add_new.dart';
@@ -15,11 +18,35 @@ class home_page extends StatefulWidget {
 }
 
 class _home_pageState extends State<home_page> {
+
+
+  List<Pill> allListOfPills = List<Pill>();
+  final Repository _repository = Repository();
+  // ignore: deprecated_member_use
+  List<Pill> dailyPills = List<Pill>();
+
+  final CalendarDayModel _days = CalendarDayModel();
+  List<CalendarDayModel> _daysList;
+  //====================================================
+
+  //handle last choose day index in calendar
+  int _lastChooseDay = 0;
+
+
   @override
   void initState() {
     super.initState();
+    setData();
+    _daysList = _days.getCurrentDays();
   }
   int _currentIndex = 0;
+  Future setData() async {
+    allListOfPills.clear();
+    (await _repository.getAllData("Pills")).forEach((pillMap) {
+      allListOfPills.add(Pill().pillMapToObject(pillMap));
+    });
+    chooseDay(_daysList[_lastChooseDay]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,6 +144,7 @@ class _home_pageState extends State<home_page> {
           BottomNavigationBarItem(
             title: Text(''),
             icon: Icon(Icons.home),
+            
           ),
           BottomNavigationBarItem(
             title: Text(''),
@@ -133,6 +161,22 @@ class _home_pageState extends State<home_page> {
         ],
       ),
     );
+  }
+  void chooseDay(CalendarDayModel clickedDay){
+    setState(() {
+      _lastChooseDay = _daysList.indexOf(clickedDay);
+      _daysList.forEach((day) => day.isChecked = false );
+      CalendarDayModel chooseDay = _daysList[_daysList.indexOf(clickedDay)];
+      chooseDay.isChecked = true;
+      dailyPills.clear();
+      allListOfPills.forEach((pill) {
+        DateTime pillDate = DateTime.fromMicrosecondsSinceEpoch(pill.time * 1000);
+        if(chooseDay.dayNumber == pillDate.day && chooseDay.month == pillDate.month && chooseDay.year == pillDate.year){
+          dailyPills.add(pill);
+        }
+      });
+      dailyPills.sort((pill1,pill2) => pill1.time.compareTo(pill2.time));
+    });
   }
 }
 
