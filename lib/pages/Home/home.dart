@@ -48,12 +48,33 @@ class _home_pageState extends State<home_page> {
     chooseDay(_daysList[_lastChooseDay]);
   }
 
+
   @override
   Widget build(BuildContext context) {
+    final Widget addButton = FloatingActionButton(
+      elevation: 2.0,
+      onPressed: () async {
+        await setData();
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => add_new()),
+        );
+      },
+      child: Icon(
+        Icons.add,
+        color: Colors.white,
+        size: 24.0,
+      ),
+      backgroundColor: Color(0xffda8297),
+    );
+
     final double deviceHeight =
         MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
 
     return Scaffold(
+      floatingActionButton: addButton,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: SafeArea(
@@ -123,43 +144,19 @@ class _home_pageState extends State<home_page> {
                 ),
               ),
               SizedBox(height: deviceHeight * 0.03),
-              MedicinesList()
+              dailyPills.isEmpty
+                  ? SizedBox(
+                width: double.infinity,
+                height: 100,
+                child: Text('Add Pills ')
+              )
+                  : MedicinesList(dailyPills,setData),
+
             ],
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex,
-        backgroundColor: Colors.white,
-        selectedItemColor: Color(0xff7379CD),
-        unselectedItemColor: Colors.grey,
-        selectedFontSize: 14,
-        unselectedFontSize: 14,
-        onTap: (value) {
 
-          setState(() => _currentIndex = value);
-        },
-        items: [
-          BottomNavigationBarItem(
-            title: Text(''),
-            icon: Icon(Icons.home),
-            
-          ),
-          BottomNavigationBarItem(
-            title: Text(''),
-            icon: Icon(Icons.calendar_today_outlined),
-          ),
-          BottomNavigationBarItem(
-            title: Text(''),
-            icon: Icon(Icons.add),
-          ),
-          BottomNavigationBarItem(
-            title: Text(''),
-            icon: Icon(Icons.perm_identity),
-          ),
-        ],
-      ),
     );
   }
   void chooseDay(CalendarDayModel clickedDay){

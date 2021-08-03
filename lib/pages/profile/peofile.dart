@@ -75,7 +75,7 @@ class profile_page extends StatelessWidget{
                    children: [
                      Text('   Onging Course',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                      SizedBox(height: 5,),
-                     MedicinesList(),
+
                    ],
                  ),
                ),

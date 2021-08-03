@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:project2_gsg/database/repository.dart';
 import 'package:project2_gsg/models/m_type.dart';
 import 'package:project2_gsg/models/pill.dart';
@@ -64,6 +65,7 @@ class _add_newState extends State<add_new> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      key: _scaffoldKey,
       child: Scaffold(
         body: Padding(
           padding: EdgeInsets.all(25.0),
@@ -88,7 +90,7 @@ class _add_newState extends State<add_new> {
                     ),
                     SizedBox(height: 8),
                     TextField(
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.text,
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w400,
@@ -128,49 +130,47 @@ class _add_newState extends State<add_new> {
                     SizedBox(height: 10),
                     Row(
                       children: [
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Text(
-                            'After Breckfast',
-                            style: TextStyle(color: Color(0xff7379cd)),
+                        PlatformFlatButton(
+                          handler: () => openDatePicker(),
+                          buttonChild: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(width: 10),
+                              Text(
+                                DateFormat("dd.MM").format(setDate),
+                                style: TextStyle(
+                                    fontSize: 26.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(width: 10),
+                              Icon(
+                                Icons.event,
+                                size: 30,
+                                color:  Color(0xff8C87E6),
+                              )
+                            ],
                           ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xffBDC4F8)),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Text(
-                            'After Diner',
-                            style: TextStyle(color: Color(0xffda8297)),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Color(0xffFCCED8)),
-                          ),
+                          color: Color(0xffda8297),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
 
-                    SizedBox(height: 10),
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Done',
-                          style: TextStyle(color: Color(0xff7379CD)),
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Color(0xffBDC4F8)),
-                        ),
+
+
+                    SizedBox(height: 30),
+                    Container(
+                      height: 40,
+                      width: double.infinity,
+                      child:FlatButton(
+                        color:Color(0xffda8297),
+                        child: Text('Done',style: TextStyle(fontSize: 24),),
+                        onPressed: ()async => savePill() ,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
                       ),
-                    ),
+
+                    )
                   ],
                 ),
               ],
@@ -183,35 +183,6 @@ class _add_newState extends State<add_new> {
 
 
 
-  void sliderChanged(double value) =>
-      setState(() => this.howManyWeeks = value.round());
-
-  //choose popum menu item
-  void popUpMenuItemChanged(String value) =>
-      setState(() => this.selectWeight = value);
-
-  //------------------------OPEN TIME PICKER (SHOW)----------------------------
-  //------------------------CHANGE CHOOSE PILL TIME----------------------------
-
-  Future<void> openTimePicker() async {
-    await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-        helpText: "Choose Time")
-        .then((value) {
-      DateTime newDate = DateTime(
-          setDate.year,
-          setDate.month,
-          setDate.day,
-          value != null ? value.hour : setDate.hour,
-          value != null ? value.minute : setDate.minute);
-      setState(() => setDate = newDate);
-      print(newDate.hour);
-      print(newDate.minute);
-    });
-  }
-
-  //====================================================================
 
   //-------------------------SHOW DATE PICKER AND CHANGE CURRENT CHOOSE DATE-------------------------------
   Future<void> openDatePicker() async {
@@ -246,8 +217,7 @@ class _add_newState extends State<add_new> {
     } else {
       //create pill object
       Pill pill = Pill(
-          amount: amountController.text,
-          howManyWeeks: howManyWeeks,
+
           medicineForm: medicineTypes[medicineTypes.indexWhere((element) => element.isChoose == true)].name,
           name: nameController.text,
           time: setDate.millisecondsSinceEpoch,

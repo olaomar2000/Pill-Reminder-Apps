@@ -1,10 +1,19 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:project2_gsg/models/pill.dart';
 //done
 class MedicineCard extends StatelessWidget {
+
+  final Pill medicine;
+  final Function setData;
+
+  MedicineCard(this.medicine,this.setData);
+
   @override
   Widget build(BuildContext context) {
+    final bool isEnd = DateTime.now().millisecondsSinceEpoch > medicine.time;
     return Padding(
       padding:  EdgeInsets.symmetric(horizontal: 10),
       child: Container(
@@ -29,7 +38,7 @@ class MedicineCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Abacavir",
+                    medicine.name,
                     style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w500),
 
                   ),
@@ -62,7 +71,7 @@ class MedicineCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(50.0),
                   child: Image.asset(
-                      "assets/images/welcome_image.png"),
+                      medicine.image),
                 ),
               )),
         ),
