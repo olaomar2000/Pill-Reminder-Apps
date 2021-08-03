@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:project2_gsg/database/repository.dart';
 import 'package:project2_gsg/models/m_type.dart';
 import 'package:project2_gsg/models/pill.dart';
+import 'package:project2_gsg/pages/Home/home.dart';
 import 'package:project2_gsg/pages/add/typecard.dart';
 import 'package:project2_gsg/platform_flat_button.dart';
 import 'package:project2_gsg/snack_bar.dart';
@@ -20,9 +21,7 @@ class _add_newState extends State<add_new> {
 
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final Snackbar snackbar = Snackbar();
-  //medicine types
-  final List<String> weightValues = ["pills", "ml", "mg"];
+
 
   //list of medicines forms objects
   final List<MedicineType> medicineTypes = [
@@ -44,22 +43,8 @@ class _add_newState extends State<add_new> {
   String selectWeight;
   DateTime setDate = DateTime.now();
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController amountController = TextEditingController();
 
-  //==========================================
-
-  //-------------- Database and notifications ------------------
   final Repository _repository = Repository();
-
-
-  //============================================================
-
-  @override
-  void initState() {
-    super.initState();
-    selectWeight = weightValues[0];
-
-  }
 
 
   @override
@@ -212,8 +197,8 @@ class _add_newState extends State<add_new> {
     //check if medicine time is lower than actual time
     if (setDate.millisecondsSinceEpoch <=
         DateTime.now().millisecondsSinceEpoch) {
-      snackbar.showSnack(
-          "Check your medicine time and date", _scaffoldKey, null);
+
+         print( "Check your medicine time and date");
     } else {
       //create pill object
       Pill pill = Pill(
@@ -229,27 +214,25 @@ class _add_newState extends State<add_new> {
         dynamic result =
         await _repository.insertData("Pills", pill.pillToMap());
         if (result == null) {
-          snackbar.showSnack("Something went wrong", _scaffoldKey, null);
+          print("Something went wrong");
           return;
         } else {
-          //set the notification schneudele
+
           tz.initializeTimeZones();
           tz.setLocalLocation(tz.getLocation('Europe/Warsaw'));
-      //    await _notifications.showNotification(pill.name, pill.amount + " " + pill.medicineForm + " " + pill.type, time);
           setDate = setDate.add(Duration(milliseconds: 604800000));
           pill.time = setDate.millisecondsSinceEpoch;
 
         }
       }
-      //---------------------------------------------------------------------------------------
-      snackbar.showSnack("Saved", _scaffoldKey, null);
-      Navigator.pop(context);
+      Navigator.pop(
+        context,
+        MaterialPageRoute(builder: (context) => home_page()),
+      );
+
     }
   }
 
-  //=================================================================================================
-
-  //----------------------------CLICK ON MEDICINE FORM CONTAINER----------------------------------------
   void medicineTypeClick(MedicineType medicine) {
     setState(() {
       medicineTypes.forEach((medicineType) => medicineType.isChoose = false);
