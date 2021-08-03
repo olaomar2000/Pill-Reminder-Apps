@@ -39,7 +39,7 @@ class _home_pageState extends State<home_page> {
     setData();
     _daysList = _days.getCurrentDays();
   }
-  int _currentIndex = 0;
+
   Future setData() async {
     allListOfPills.clear();
     (await _repository.getAllData("Pills")).forEach((pillMap) {

@@ -190,10 +190,9 @@ class _add_newState extends State<add_new> {
     });
   }
 
-  //=======================================================================================================
-
   //--------------------------------------SAVE PILL IN DATABASE---------------------------------------
   Future savePill() async {
+    print('goooooooooo00000000000');
     //check if medicine time is lower than actual time
     if (setDate.millisecondsSinceEpoch <=
         DateTime.now().millisecondsSinceEpoch) {
@@ -208,23 +207,11 @@ class _add_newState extends State<add_new> {
           time: setDate.millisecondsSinceEpoch,
           type: selectWeight,
          );
+      print( "donnnnnneeeeeeeee");
 
-      //---------------------| Save as many medicines as many user checks |----------------------
-      for (int i = 0; i < howManyWeeks; i++) {
-        dynamic result =
-        await _repository.insertData("Pills", pill.pillToMap());
-        if (result == null) {
-          print("Something went wrong");
-          return;
-        } else {
 
-          tz.initializeTimeZones();
-          tz.setLocalLocation(tz.getLocation('Europe/Warsaw'));
-          setDate = setDate.add(Duration(milliseconds: 604800000));
-          pill.time = setDate.millisecondsSinceEpoch;
+      await _repository.insertData("Pills", pill.pillToMap());
 
-        }
-      }
       Navigator.pop(
         context,
         MaterialPageRoute(builder: (context) => home_page()),
